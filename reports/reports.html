@@ -22,7 +22,7 @@
     <div>
       <div>
         <div>
-          <h1>Spaceflight News Articles</h1>
+          <h1>Spaceflight News Reports</h1>
           <p>
             A demonstration of how next and previous page pagination works on
             HTMX with JSON Data APIs.
@@ -34,14 +34,20 @@
             <li><a href="/reports/reports.html">Reports</a></li>
           </ul>
           <br />
-          <div>
-            <input type="text" placeholder="Search reports..." />
-          </div>
         </div>
 
         <div hx-ext="client-side-templates">
+          <input
+            name="search"
+            type="search"
+            placeholder="Search reports..."
+            hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+            hx-trigger="keyup changed delay:500ms, search"
+            hx-target="#results"
+            nunjucks-template="reports-template"
+          />
+          <br />
           <div
-            id="test"
             hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
             hx-swap="innerHTML show:window:top"
             hx-trigger="revealed"
