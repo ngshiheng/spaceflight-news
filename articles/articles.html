@@ -20,33 +20,38 @@
   </head>
   <body>
     <div>
-      <div>
-        <div>
-          <h1>Spaceflight News Articles</h1>
-          <p>
-            A demonstration of how infinite scrolling works on HTMX with JSON
-            Data APIs.
-          </p>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/articles/articles.html">Articles</a></li>
-            <li><a href="/blogs/blogs.html">Blogs</a></li>
-            <li><a href="/reports/reports.html">Reports</a></li>
-          </ul>
-          <br />
-          <div>
-            <input type="text" placeholder="Search articles..." />
-          </div>
-        </div>
+      <h1>Spaceflight News Articles</h1>
+      <p>
+        A demonstration of how infinite scrolling works on HTMX with JSON Data
+        APIs.
+      </p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/articles/articles.html">Articles</a></li>
+        <li><a href="/blogs/blogs.html">Blogs</a></li>
+        <li><a href="/reports/reports.html">Reports</a></li>
+      </ul>
+      <br />
 
-        <div hx-ext="client-side-templates">
-          <div
-            hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-            hx-trigger="revealed"
-            hx-swap="afterend"
-            nunjucks-template="articles-template"
-          >
-            <template id="articles-template">
+      <div hx-ext="client-side-templates">
+        <input
+          name="search"
+          type="search"
+          placeholder="Search articles..."
+          hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+          hx-trigger="keyup changed delay:500ms, search"
+          hx-target="#result"
+          nunjucks-template="articles-template"
+        />
+        <br />
+        <div
+          hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+          hx-trigger="revealed"
+          hx-swap="afterend"
+          nunjucks-template="articles-template"
+        >
+          <template id="articles-template">
+            <div id="result">
               {% for article in results %}
 
               <hr />
@@ -67,8 +72,8 @@
                 nunjucks-template="articles-template"
               ></div>
               {% endif %}
-            </template>
-          </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
