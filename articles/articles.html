@@ -19,62 +19,60 @@
     />
   </head>
   <body>
-    <div>
-      <h1>Spaceflight News Articles</h1>
-      <p>
-        A demonstration of how infinite scrolling works on HTMX with JSON Data
-        APIs.
-      </p>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/articles/articles.html">Articles</a></li>
-        <li><a href="/blogs/blogs.html">Blogs</a></li>
-        <li><a href="/reports/reports.html">Reports</a></li>
-      </ul>
+    <h1>Spaceflight News Articles</h1>
+    <p>
+      A demonstration of how infinite scrolling works on HTMX with JSON Data
+      APIs.
+    </p>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/articles/articles.html">Articles</a></li>
+      <li><a href="/blogs/blogs.html">Blogs</a></li>
+      <li><a href="/reports/reports.html">Reports</a></li>
+    </ul>
+    <br />
+
+    <div hx-ext="client-side-templates">
+      <input
+        name="search"
+        type="search"
+        placeholder="Search articles..."
+        hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+        hx-trigger="keyup changed delay:500ms, search"
+        hx-target="#result"
+        nunjucks-template="articles-template"
+      />
       <br />
+      <div
+        hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+        hx-trigger="revealed"
+        hx-swap="afterend"
+        nunjucks-template="articles-template"
+      >
+        <template id="articles-template">
+          <div id="result">
+            {% for article in results %}
 
-      <div hx-ext="client-side-templates">
-        <input
-          name="search"
-          type="search"
-          placeholder="Search articles..."
-          hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-          hx-trigger="keyup changed delay:500ms, search"
-          hx-target="#result"
-          nunjucks-template="articles-template"
-        />
-        <br />
-        <div
-          hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-          hx-trigger="revealed"
-          hx-swap="afterend"
-          nunjucks-template="articles-template"
-        >
-          <template id="articles-template">
-            <div id="result">
-              {% for article in results %}
-
-              <hr />
-              <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-              <h5><span></span> Post by {{ article.news_site }}</h5>
-              {% if article.featured %}
-              <h5>
-                <span>Featured</span>
-              </h5>
-              {% endif %}
-              <p>{{ article.summary }}</p>
-              <br /><br />
-              {% endfor %} {% if next %}
-              <div
-                hx-get="{{ next }}"
-                hx-swap="outerHTML"
-                hx-trigger="revealed"
-                nunjucks-template="articles-template"
-              ></div>
-              {% endif %}
-            </div>
-          </template>
-        </div>
+            <hr />
+            <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+            <h5><span></span> Post by {{ article.news_site }}</h5>
+            {% if article.featured %}
+            <h5>
+              <span>Featured</span>
+            </h5>
+            {% endif %}
+            <p>{{ article.summary }}</p>
+            <br /><br />
+            {% endfor %} {% if next %}
+            <div
+              hx-get="{{ next }}"
+              hx-swap="outerHTML"
+              hx-trigger="revealed"
+              nunjucks-template="articles-template"
+            ></div>
+            {% endif %}
+          </div>
+        </template>
       </div>
     </div>
 

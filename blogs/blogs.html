@@ -19,57 +19,60 @@
     />
   </head>
   <body>
-    <div>
-      <div>
-        <div>
-          <h1>Spaceflight News Blogs</h1>
-          <p>
-            A demonstration of how infinite scrolling works on HTMX with JSON
-            Data APIs.
-          </p>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/articles/articles.html">Articles</a></li>
-            <li><a href="/blogs/blogs.html">Blogs</a></li>
-            <li><a href="/reports/reports.html">Reports</a></li>
-          </ul>
-          <br />
-          <div>
-            <input type="text" placeholder="Search blogs..." />
-          </div>
-        </div>
+    <h1>Spaceflight News Blogs</h1>
+    <p>
+      A demonstration of how infinite scrolling works on HTMX with JSON Data
+      APIs.
+    </p>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/articles/articles.html">Articles</a></li>
+      <li><a href="/blogs/blogs.html">Blogs</a></li>
+      <li><a href="/reports/reports.html">Reports</a></li>
+    </ul>
+    <br />
 
-        <div hx-ext="client-side-templates">
-          <div
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-            hx-trigger="revealed"
-            hx-swap="afterend"
-            nunjucks-template="blogs-template"
-          >
-            <template id="blogs-template">
-              {% for blog in results %}
+    <div hx-ext="client-side-templates">
+      <input
+        name="search"
+        type="search"
+        placeholder="Search blogs..."
+        hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+        hx-trigger="keyup changed delay:500ms, search"
+        hx-target="#result"
+        nunjucks-template="blogs-template"
+      />
+      <br />
+      <div
+        hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+        hx-trigger="revealed"
+        hx-swap="afterend"
+        nunjucks-template="blogs-template"
+      >
+        <template id="blogs-template">
+          <div id="result">
+            {% for blog in results %}
 
-              <hr />
-              <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
-              <h5><span></span> Post by {{ blog.news_site }}</h5>
-              {% if blog.featured %}
-              <h5>
-                <span>Featured</span>
-              </h5>
-              {% endif %}
-              <p>{{ blog.summary }}</p>
-              <br /><br />
-              {% endfor %} {% if next %}
-              <div
-                hx-get="{{ next }}"
-                hx-swap="outerHTML"
-                hx-trigger="revealed"
-                nunjucks-template="blogs-template"
-              ></div>
-              {% endif %}
-            </template>
+            <hr />
+            <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
+            <h5><span></span> Post by {{ blog.news_site }}</h5>
+            {% if blog.featured %}
+            <h5>
+              <span>Featured</span>
+            </h5>
+            {% endif %}
+            <p>{{ blog.summary }}</p>
+            <br /><br />
+            {% endfor %} {% if next %}
+            <div
+              hx-get="{{ next }}"
+              hx-swap="outerHTML"
+              hx-trigger="revealed"
+              nunjucks-template="blogs-template"
+            ></div>
+            {% endif %}
           </div>
-        </div>
+        </template>
       </div>
     </div>
 
