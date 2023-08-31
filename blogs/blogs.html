@@ -22,7 +22,7 @@
     <div>
       <div>
         <div>
-          <h1>Spaceflight News Articles</h1>
+          <h1>Spaceflight News Blogs</h1>
           <p>
             A demonstration of how infinite scrolling works on HTMX with JSON
             Data APIs.
@@ -35,36 +35,36 @@
           </ul>
           <br />
           <div>
-            <input type="text" placeholder="Search articles..." />
+            <input type="text" placeholder="Search blogs..." />
           </div>
         </div>
 
         <div hx-ext="client-side-templates">
           <div
-            hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
             hx-trigger="revealed"
             hx-swap="afterend"
-            nunjucks-template="articles-template"
+            nunjucks-template="blogs-template"
           >
-            <template id="articles-template">
-              {% for article in results %}
+            <template id="blogs-template">
+              {% for blog in results %}
 
               <hr />
-              <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-              <h5><span></span> Post by {{ article.news_site }}</h5>
-              {% if article.featured %}
+              <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
+              <h5><span></span> Post by {{ blog.news_site }}</h5>
+              {% if blog.featured %}
               <h5>
                 <span>Featured</span>
               </h5>
               {% endif %}
-              <p>{{ article.summary }}</p>
+              <p>{{ blog.summary }}</p>
               <br /><br />
               {% endfor %} {% if next %}
               <div
                 hx-get="{{ next }}"
                 hx-swap="outerHTML"
                 hx-trigger="revealed"
-                nunjucks-template="articles-template"
+                nunjucks-template="blogs-template"
               ></div>
               {% endif %}
             </template>
