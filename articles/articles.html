@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Spaceflight News</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+    <script>
+      // CORS workaround
+      document.addEventListener("htmx:configRequest", (evt) => {
+        evt.detail.headers = [];
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
+    />
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>
+          <h1>Spaceflight News</h1>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/articles/articles.html">Articles</a></li>
+            <li><a href="/reports/reports.html">Reports</a></li>
+          </ul>
+          <br />
+          <div>
+            <input type="text" placeholder="Search articles..." />
+          </div>
+        </div>
+
+        <div hx-ext="client-side-templates">
+          <div
+            hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+            hx-trigger="revealed"
+            hx-swap="afterend"
+            nunjucks-template="articles-template"
+          >
+            <template id="articles-template">
+              {% for article in results %}
+
+              <hr />
+              <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+              <h5><span></span> Post by {{ article.news_site }}</h5>
+              {% if article.featured %}
+              <h5>
+                <span>Featured</span>
+              </h5>
+              {% endif %}
+              <p>{{ article.summary }}</p>
+              <br /><br />
+              {% endfor %} {% if next %}
+              <div
+                hx-get="{{ next }}"
+                hx-swap="outerHTML"
+                hx-trigger="revealed"
+                nunjucks-template="articles-template"
+              ></div>
+              {% endif %}
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+    </footer>
+  </body>
+</html>

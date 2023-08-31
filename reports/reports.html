@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Spaceflight News</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+    <script>
+      // CORS workaround
+      document.addEventListener("htmx:configRequest", (evt) => {
+        evt.detail.headers = [];
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
+    />
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>
+          <h1>Spaceflight News</h1>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/articles/articles.html">Articles</a></li>
+            <li><a href="/reports/reports.html">Reports</a></li>
+          </ul>
+          <br />
+          <div>
+            <input type="text" placeholder="Search reports..." />
+          </div>
+        </div>
+
+        <div hx-ext="client-side-templates">
+          <div
+            id="test"
+            hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+            hx-trigger="revealed"
+            hx-target="#results"
+            nunjucks-template="reports-template"
+          >
+            <template id="reports-template">
+              {% for report in results %}
+              <hr />
+              <h2><a href="{{ report.url }}">{{ report.title }}</a></h2>
+              <h5><span></span> Post by {{ report.news_site }}</h5>
+              {% if report.featured %}
+              <h5>
+                <span>Featured</span>
+              </h5>
+              {% endif %}
+              <p>{{ report.summary }}</p>
+              <br /><br />
+              {% endfor %} {% if previous %}
+              <button
+                hx-get="{{ previous }}"
+                hx-target="#results"
+                nunjucks-template="reports-template"
+              >
+                Previous Page
+              </button>
+              {% endif %} {% if next %}
+              <button
+                hx-get="{{ next }}"
+                hx-target="#results"
+                nunjucks-template="reports-template"
+              >
+                Next Page
+              </button>
+              {% endif %}
+            </template>
+            <div id="results"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+    </footer>
+  </body>
+</html>

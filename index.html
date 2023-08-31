@@ -20,54 +20,21 @@
   </head>
   <body>
     <div>
-      <div>
-        <div>
-          <h1>Spaceflight News</h1>
-          <ul>
-            <li><a href="/">Articles</a></li>
-          </ul>
-          <br />
-          <div>
-            <input type="text" placeholder="Search articles..." />
-          </div>
-        </div>
-
-        <div hx-ext="client-side-templates">
-          <div
-            hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-            hx-trigger="revealed"
-            hx-swap="afterend"
-            nunjucks-template="articles-template"
-          >
-            <template id="articles-template">
-              {% for article in results %}
-
-              <hr />
-              <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-              <h5><span></span> Post by {{ article.news_site }}</h5>
-              {% if article.featured %}
-              <h5>
-                <span>Featured</span>
-              </h5>
-              {% endif %}
-              <p>{{ article.summary }}</p>
-              <br /><br />
-              {% endfor %} {% if next %}
-              <div
-                hx-get="{{ next }}"
-                hx-swap="outerHTML"
-                hx-trigger="revealed"
-                nunjucks-template="articles-template"
-              ></div>
-              {% endif %}
-            </template>
-          </div>
-        </div>
-      </div>
+      <h1>Spaceflight News</h1>
+      <p>
+        Made with <a href="https://htmx.org">HTMX</a> and
+        <a href="https://api.spaceflightnewsapi.net/v4/docs/"
+          >Spaceflight News API.</a
+        >
+      </p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/articles/articles.html">Articles</a></li>
+        <li><a href="/reports/reports.html">Reports</a></li>
+      </ul>
     </div>
-
     <footer>
-      <p>Created by <a href="https://jerrynsh.com">jerrynsh.com</a>.</p>
+      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
     </footer>
   </body>
 </html>
