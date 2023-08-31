@@ -51,7 +51,25 @@
         nunjucks-template="reports-template"
       >
         <template id="reports-template">
-          {% for report in results %}
+          {% if previous %}
+          <a
+            href
+            hx-get="{{ previous }}"
+            hx-target="#results"
+            nunjucks-template="reports-template"
+          >
+            &laquo; Previous
+          </a>
+          | {% endif %} {% if next %}
+          <a
+            href
+            hx-get="{{ next }}"
+            hx-target="#results"
+            nunjucks-template="reports-template"
+          >
+            Next &raquo;
+          </a>
+          {% endif %} {% for report in results %}
           <hr />
           <h2><a href="{{ report.url }}">{{ report.title }}</a></h2>
           <h5><span></span> Post by {{ report.news_site }}</h5>
@@ -63,21 +81,23 @@
           <p>{{ report.summary }}</p>
           <br /><br />
           {% endfor %} {% if previous %}
-          <button
+          <a
+            href
             hx-get="{{ previous }}"
             hx-target="#results"
             nunjucks-template="reports-template"
           >
-            Previous Page
-          </button>
-          {% endif %} {% if next %}
-          <button
+            &laquo; Previous
+          </a>
+          | {% endif %} {% if next %}
+          <a
+            href
             hx-get="{{ next }}"
             hx-target="#results"
             nunjucks-template="reports-template"
           >
-            Next Page
-          </button>
+            Next &raquo;
+          </a>
           {% endif %}
         </template>
         <div id="results"></div>
