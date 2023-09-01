@@ -21,8 +21,9 @@
   <body>
     <h1>Spaceflight News Blogs</h1>
     <p>
-      A demonstration of how infinite scrolling works on
-      <a href="https://htmx.org">htmx</a> with JSON data APIs.
+      Numbered pagination demonstration using
+      <a href="https://htmx.org">htmx</a>
+      with JSON data APIs.
     </p>
     <ul>
       <li><a href="/">Home</a></li>
@@ -45,11 +46,48 @@
       <br />
       <div
         hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+        hx-swap="innerHTML show:window:top"
         hx-trigger="revealed"
-        hx-swap="afterend"
+        hx-target="#results"
         nunjucks-template="blogs-template"
       >
         <template id="blogs-template">
+          {% set totalPages = (count // 10) - 1 %} {% set offsetRegex
+          =r/offset=(\d+)/g %} {% set offset = offsetRegex.exec(next)[1] or
+          offsetRegex.exec(previous)[1] %} {% set currentPage = (offset // 10)
+          %} Page {{ currentPage }} of {{ totalPages }}
+
+          <br />
+          <br />
+
+          <a
+            href
+            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0"
+            hx-target="#results"
+            >« 1</a
+          >
+
+          ... {% set pages = range(currentPage -3 ,currentPage + 4) |
+          select('greaterthan', 1) | select('lessthan', totalPages) %} {% for i
+          in pages %}
+
+          <a
+            href
+            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i - 1) * 10 }}"
+            hx-target="#results"
+            >{{ i }}</a
+          >
+
+          {% endfor %} ...
+
+          <a
+            href
+            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ count // 10 * 10 }}"
+            hx-target="#results"
+            >{{ totalPages }} »</a
+          >
+
+          <br />
           <div id="result">
             {% for blog in results %}
 
@@ -63,16 +101,10 @@
             {% endif %}
             <p>{{ blog.summary }}</p>
             <br /><br />
-            {% endfor %} {% if next %}
-            <div
-              hx-get="{{ next }}"
-              hx-swap="outerHTML"
-              hx-trigger="revealed"
-              nunjucks-template="blogs-template"
-            ></div>
-            {% endif %}
+            {% endfor %}
           </div>
         </template>
+        <div id="results"></div>
       </div>
     </div>
 
