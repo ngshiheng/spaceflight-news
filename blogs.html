@@ -86,7 +86,7 @@
                             href
                             hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0&search={{ search }}"
                             hx-target="#results"
-                            >1</a
+                            >&laquo; 1</a
                             >
                         {% endif %}
                         ... 
@@ -122,7 +122,7 @@
                             href
                             hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (totalPages * 10) }}&search={{ search }}"
                             hx-target="#results"
-                            >{{ totalPages + 1 }}</a
+                            >{{ totalPages + 1 }} &raquo</a
                             >
                         {% endif %} {% for blog in results %}
                         <hr />
