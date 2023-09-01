@@ -1,187 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Spaceflight News</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://unpkg.com/htmx.org"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
-    <script>
-      // CORS workaround
-      document.addEventListener("htmx:configRequest", (evt) => {
-        evt.detail.headers = [];
-      });
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-    />
-  </head>
-  <body>
-    <h1>Spaceflight News Blogs</h1>
-    <p>
-      Numbered pagination demonstration using
-      <a href="https://htmx.org">htmx</a>
-      with JSON data APIs.
-    </p>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/articles.html">Articles</a></li>
-      <li><a href="/blogs.html">Blogs</a></li>
-      <li><a href="/reports.html">Reports</a></li>
-    </ul>
-    <br />
-    <div hx-ext="client-side-templates">
-      <input
-        name="search"
-        type="search"
-        placeholder="Search blogs..."
-        hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-        hx-trigger="keyup changed delay:500ms, search"
-        hx-target="#result"
-        nunjucks-template="blogs-template"
-      />
-      <br />
-      <div
-        hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-        hx-swap="innerHTML show:window:top"
-        hx-trigger="revealed"
-        hx-target="#results"
-        nunjucks-template="blogs-template"
-      >
-        <template id="blogs-template">
-          {% set totalPages = (count // 10) - 1 %} {% set offsetRegex =
-          r/offset=(\d+)/g %} {% set offset = offsetRegex.exec(next)[1] or
-          offsetRegex.exec(previous)[1] %} {% set currentPage = (offset // 10)
-          %} {% if currentPage === 1 %}
-          <u
-            ><a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0"
-              hx-target="#results"
-              >1</a
-            ></u
-          >
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0"
-            hx-target="#results"
-            >1</a
-          >
-          {% endif %} ... {% set pages = range(currentPage -3 ,currentPage + 4)
-          | select('greaterthan', 1) | select('lessthan', totalPages) %} {% for
-          i in pages %} {% if i === currentPage %}
-          <u
-            ><a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i - 1) * 10 }}"
-              hx-target="#results"
-              >{{ i }}</a
-            ></u
-          >
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i - 1) * 10 }}"
-            hx-target="#results"
-            >{{ i }}</a
-          >
-          {% endif %} {% endfor %} ... {% if currentPage === totalPages %}
-          <u>
-            <a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ count // 10 * 10 }}"
-              hx-target="#results"
-              >{{ totalPages }}</a
-            >
-          </u>
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ count // 10 * 10 }}"
-            hx-target="#results"
-            >{{ totalPages }}</a
-          >
-          {% endif %}
-          <br />
-          <div id="result">
-            {% for blog in results %}
-            <hr />
-            <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
-            <h5><span></span> Post by {{ blog.news_site }}</h5>
-            {% if blog.featured %}
-            <h5>
-              <span>Featured</span>
-            </h5>
-            {% endif %}
-            <p>{{ blog.summary }}</p>
-            <br /><br />
-            {% endfor %}
-          </div>
-          {% set totalPages = (count // 10) - 1 %} {% set offsetRegex =
-          r/offset=(\d+)/g %} {% set offset = offsetRegex.exec(next)[1] or
-          offsetRegex.exec(previous)[1] %} {% set currentPage = (offset // 10)
-          %} {% if currentPage === 1 %}
-          <u
-            ><a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0"
-              hx-target="#results"
-              >1</a
-            ></u
-          >
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0"
-            hx-target="#results"
-            >1</a
-          >
-          {% endif %} ... {% set pages = range(currentPage -3 ,currentPage + 4)
-          | select('greaterthan', 1) | select('lessthan', totalPages) %} {% for
-          i in pages %} {% if i === currentPage %}
-          <u
-            ><a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i - 1) * 10 }}"
-              hx-target="#results"
-              >{{ i }}</a
-            ></u
-          >
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i - 1) * 10 }}"
-            hx-target="#results"
-            >{{ i }}</a
-          >
-          {% endif %} {% endfor %} ... {% if currentPage === totalPages %}
-          <u>
-            <a
-              href
-              hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ count // 10 * 10 }}"
-              hx-target="#results"
-              >{{ totalPages }}</a
-            >
-          </u>
-          {% else %}
-          <a
-            href
-            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ count // 10 * 10 }}"
-            hx-target="#results"
-            >{{ totalPages }}</a
-          >
-          {% endif %}
-        </template>
-        <div id="results"></div>
-      </div>
-    </div>
-    <hr />
-
-    <footer>
-      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
-    </footer>
-  </body>
+    <head>
+        <title>Spaceflight News</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/htmx.org"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+        <script>
+            // CORS workaround
+            document.addEventListener("htmx:configRequest", (evt) => {
+              evt.detail.headers = [];
+            });
+        </script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
+            />
+    </head>
+    <body>
+        <h1>Spaceflight News Blogs</h1>
+        <p>
+            Numbered pagination demonstration using
+            <a href="https://htmx.org">htmx</a>
+            with JSON data APIs.
+        </p>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/articles.html">Articles</a></li>
+            <li><a href="/blogs.html">Blogs</a></li>
+            <li><a href="/reports.html">Reports</a></li>
+        </ul>
+        <br />
+        <div hx-ext="client-side-templates">
+            <input
+                name="search"
+                type="search"
+                placeholder="Search blogs..."
+                hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+                hx-trigger="keyup changed delay:500ms, search"
+                hx-target="#result"
+                nunjucks-template="blogs-template"
+                />
+            <br />
+            <div
+                hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+                hx-swap="innerHTML show:window:top"
+                hx-trigger="revealed"
+                hx-target="#results"
+                nunjucks-template="blogs-template"
+                >
+                <template id="blogs-template">
+                    <div id="result">
+                        {% if count === 0 %} No blogs. 
+                        {% else %} 
+                        {% set totalPages = ((count / 10) - 1) | round(0, "ceil") %} 
+                        {% set offsetRegex = r/offset=(\d+)/g %} 
+                        {% set searchRegex = r/search=(.+)/g %} 
+                        {% if next %}
+                        {% set offsetParam = (offsetRegex.exec(next)[1] | default(0) | int) - 10 %} 
+                        {% elseif previous %}
+                        {% set offsetParam = (offsetRegex.exec(previous)[1] | default(0) | int) + 10 %}
+                        {% else %}
+                        {% set offsetParam = 0 %}
+                        {% endif %}
+                        {% if offsetParam !== NaN %}
+                        {% set offset = offsetParam %} 
+                        {% else %}
+                        {% set offset = 10 %} 
+                        {% endif %}
+                        {% set search = searchRegex.exec(next)[1] or searchRegex.exec(previous)[1] %} {# FIXME: clear search input if next and previous are empty #}
+                        {% set currentPage = (offset / 10) + 1 %}
+                        {% if currentPage === 1 %}
+                        <u
+                            ><a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0&search={{ search }}"
+                            hx-target="#results"
+                            >1</a
+                            ></u
+                            >
+                        {% else %}
+                        <a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0&search={{ search }}"
+                            hx-target="#results"
+                            >1</a
+                            >
+                        {% endif %}
+                        ... 
+                        {% set pages = range(currentPage -3 ,currentPage + 4) | select('greaterthan', 1) | select('lessthan', totalPages + 1) %}
+                        {% for i in pages %} 
+                        {% if i === currentPage %}
+                        <u
+                            ><a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i * 10) - 10 }}&search={{ search }}"
+                            hx-target="#results"
+                            >{{ i }}</a
+                            ></u
+                            >
+                        {% else %}
+                        <a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i * 10) - 10 }}&search={{ search }}"
+                            hx-target="#results"
+                            >{{ i }}</a
+                            >
+                        {% endif %} {% endfor %} ... {% if currentPage === totalPages + 1 %}
+                        <u>
+                        <a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (totalPages * 10) }}&search={{ search }}"
+                            hx-target="#results"
+                            >{{ totalPages + 1 }}</a
+                            >
+                        </u>
+                        {% else %}
+                        <a
+                            href
+                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (totalPages * 10) }}&search={{ search }}"
+                            hx-target="#results"
+                            >{{ totalPages + 1 }}</a
+                            >
+                        {% endif %} {% for blog in results %}
+                        <hr />
+                        <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
+                        <h5><span></span> Post by {{ blog.news_site }}</h5>
+                        {% if blog.featured %}
+                        <h5>
+                            <span>Featured</span>
+                        </h5>
+                        {% endif %}
+                        <p>{{ blog.summary }}</p>
+                        <br /><br />
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </template>
+                <div id="results"></div>
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+        </footer>
+    </body>
 </html>
