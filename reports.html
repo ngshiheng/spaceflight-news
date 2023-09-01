@@ -35,11 +35,12 @@
 
     <div hx-ext="client-side-templates">
       <input
+        autofocus
         name="search"
         type="search"
         placeholder="Search reports..."
         hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
-        hx-trigger="keyup changed delay:500ms, search"
+        hx-trigger="load delay:0.5s, keyup changed delay:500ms, search"
         hx-target="#results"
         nunjucks-template="reports-template"
       />

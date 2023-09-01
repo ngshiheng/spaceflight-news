@@ -34,11 +34,12 @@
         <br />
         <div hx-ext="client-side-templates">
             <input
+                autofocus
                 name="search"
                 type="search"
                 placeholder="Search blogs..."
                 hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-                hx-trigger="keyup changed delay:500ms, search"
+                hx-trigger="load delay:0.5s, keyup changed delay:500ms, search"
                 hx-target="#result"
                 nunjucks-template="blogs-template"
                 />
