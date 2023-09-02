@@ -57,10 +57,7 @@
       >
         <template id="articles-template">
           <div id="result">
-            <i>
-              {% if count === 0 %} No articles found. {% else %} Found {{ count
-              }} articles.</i
-            >
+            <i> Found {{ count }} articles.</i>
             {% for article in results %}
             <hr />
             <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
@@ -79,7 +76,7 @@
               hx-trigger="revealed"
               nunjucks-template="articles-template"
             ></div>
-            {% endif %} {% endif %}
+            {% endif %}
           </div>
         </template>
       </div>

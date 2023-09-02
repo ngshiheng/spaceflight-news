@@ -57,10 +57,7 @@
         nunjucks-template="reports-template"
       >
         <template id="reports-template">
-          <i>
-            {% if count === 0 %} No reports found. {% else %} Found {{ count }}
-            reports.</i
-          >
+          <i> Found {{ count }} reports.</i>
           <br /><br />
           {% if previous %}
           <a
@@ -109,7 +106,7 @@
           >
             Next &raquo;
           </a>
-          {% endif %} {% endif %}
+          {% endif %}
         </template>
         <div id="results"></div>
       </div>
