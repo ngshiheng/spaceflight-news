@@ -1,3 +1,23 @@
 # Spaceflight News
 
-Built with htmx.org
+## Technologies
+
+This site is powered by htmx, Nunjucks, and the Spaceflight News API (SNAPI).
+
+## About
+
+While htmx is designed to work best with hypermedia responses, this website intends to serve as a proof-of-concept that demonstrates how htmx can also be used to effectively handle JSON responses.
+
+I created this because I feel there is a lack of comprehensive examples for managing JSON responses using htmx today.
+
+## Demo
+
+Here, you'll find htmx examples of next-previous pagination, numbered pagination, and infinite scrolling, all seamlessly integrated with JSON responses using client-side templates
+
+On top of that, this site offers a demonstration of how a search bar can interact with JSON API using htmx.
+
+## Support
+
+Created by The Space Devs (TSD), the Spaceflight News API is a great resource for developers who want to add the latest spaceflight news to their apps.
+
+It is a free API, but I do encourage users to support them through their Patreon to keep the API up and running.
