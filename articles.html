@@ -44,7 +44,7 @@
         type="search"
         placeholder="Search articles..."
         hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-        hx-trigger="load delay:0.5s, keyup changed delay:500ms, search"
+        hx-trigger="keyup changed delay:500ms, search"
         hx-target="#result"
         nunjucks-template="articles-template"
       />
