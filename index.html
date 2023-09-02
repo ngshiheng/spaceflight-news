@@ -21,23 +21,74 @@
   <body>
     <div>
       <h1>Spaceflight News</h1>
-      <p>
-        Made with <a href="https://htmx.org">htmx</a> and
-        <a href="https://api.spaceflightnewsapi.net/v4/docs/"
-          >Spaceflight News API</a
-        >.
-      </p>
-
+      <blockquote>Explore the universe of spaceflight news.</blockquote>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/articles.html">Articles</a></li>
         <li><a href="/blogs.html">Blogs</a></li>
         <li><a href="/reports.html">Reports</a></li>
       </ul>
+      <h2>Technologies</h2>
+      <p>
+        This site is powered by <a href="https://htmx.org">htmx</a>,
+        <a href="https://mozilla.github.io/nunjucks/">Nunjucks</a>, and the
+        <a href="https://api.spaceflightnewsapi.net/v4/docs/"
+          >Spaceflight News API (SNAPI)</a
+        >.
+      </p>
+      <p>
+        You can access the source code for this website on
+        <a href="https://github.com/ngshiheng/spaceflight-news">GitHub</a>.
+      </p>
+      <h2>About</h2>
+      <p>
+        While htmx is designed to work best with
+        <a
+          href="https://htmx.org/essays/two-approaches-to-decoupling/#hypermedia-network-architecture-decoupling"
+          >hypermedia responses</a
+        >, this website intends to serve as a proof-of-concept that demonstrates
+        how htmx can also be used to effectively handle
+        <a
+          href="https://htmx.org/essays/two-approaches-to-decoupling/#json-data-apis-application-level-decoupling"
+          >JSON responses</a
+        >.
+      </p>
+      <p>
+        I created this because I feel there is a lack of comprehensive examples
+        for managing JSON responses using htmx today.
+      </p>
+      <h2>Demo</h2>
+      <p>
+        Here, you'll find htmx examples of
+        <a href="/reports.html">next-previous</a> pagination,
+        <a href="/blogs.html">numbered</a> pagination, and
+        <a href="/articles.html">infinite scrolling</a>, all seamlessly
+        integrated with JSON responses using
+        <a href="https://htmx.org/extensions/client-side-templates/">
+          client-side templates</a
+        >
+      </p>
+      <p>
+        On top of that, this site offers a demonstration of how a search bar can
+        interact with JSON API using htmx.
+      </p>
+      <h2>Support</h2>
+      <p>
+        Created by
+        <a href="https://thespacedevs.com/">The Space Devs (TSD)</a>, the
+        Spaceflight News API is a great resource for developers who want to add
+        the latest spaceflight news to their apps.
+      </p>
+      <p>
+        It is a <b>free</b> API, but I do encourage users to support them
+        through their
+        <a href="https://www.patreon.com/TheSpaceDevs">Patreon</a> to keep the
+        API up and running.
+      </p>
     </div>
     <hr />
     <footer>
-      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+      <p>Made by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
     </footer>
   </body>
 </html>
