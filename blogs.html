@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Spaceflight News</title>
+        <title>Spaceflight News Blogs</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://unpkg.com/htmx.org"></script>
@@ -21,14 +21,18 @@
     <body>
         <h1>Spaceflight News Blogs</h1>
         <p>
-            Numbered pagination demonstration using
-            <a href="https://htmx.org">htmx</a>
-            with JSON data APIs.
+            Numbered pagination demonstration using htmx
+            with JSON data APIs. See the
+            source code on
+            <a
+              href="https://github.com/ngshiheng/spaceflight-news/blob/main/blogs.html"
+              >GitHub</a
+            >.
         </p>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/articles.html">Articles</a></li>
-            <li><a href="/blogs.html">Blogs</a></li>
+            <li><a href="/blogs.html"><u>Blogs</u></a></li>
             <li><a href="/reports.html">Reports</a></li>
         </ul>
         <br />
@@ -53,8 +57,12 @@
                 >
                 <template id="blogs-template">
                     <div id="result">
-                        {% if count === 0 %} No blogs. 
-                        {% else %} 
+                        <i>
+                            {% if count === 0 %} No blogs found. 
+                            {% else %} 
+                            Found {{ count }} blogs. 
+                        </i>
+                        <br /><br />
                         {% set totalPages = ((count / 10) - 1) | round(0, "ceil") %} 
                         {% set offsetRegex = r/offset=(\d+)/g %} 
                         {% set searchRegex = r/search=(.+)/g %} 
