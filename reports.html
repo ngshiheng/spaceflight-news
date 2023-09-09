@@ -47,7 +47,7 @@
                 autofocus
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
                 hx-indicator=".htmx-indicator"
-                hx-target="#results"
+                hx-target="#result"
                 hx-trigger="keyup changed delay:500ms, search"
                 name="search"
                 nunjucks-template="reports-template"
@@ -59,7 +59,7 @@
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
                 hx-indicator=".htmx-indicator"
                 hx-swap="innerHTML show:window:top"
-                hx-target="#results"
+                hx-target="#result"
                 hx-trigger="revealed"
                 nunjucks-template="reports-template"
             >
@@ -74,7 +74,7 @@
                     <a
                         href
                         hx-get="{{ previous }}"
-                        hx-target="#results"
+                        hx-target="#result"
                         nunjucks-template="reports-template"
                     >
                         &laquo; Previous
@@ -83,7 +83,7 @@
                     <a
                         href
                         hx-get="{{ next }}"
-                        hx-target="#results"
+                        hx-target="#result"
                         nunjucks-template="reports-template"
                     >
                         Next &raquo;
@@ -107,7 +107,7 @@
                     <a
                         href
                         hx-get="{{ previous }}"
-                        hx-target="#results"
+                        hx-target="#result"
                         nunjucks-template="reports-template"
                     >
                         &laquo; Previous
@@ -116,14 +116,14 @@
                     <a
                         href
                         hx-get="{{ next }}"
-                        hx-target="#results"
+                        hx-target="#result"
                         nunjucks-template="reports-template"
                     >
                         Next &raquo;
                     </a>
                     {% endif %}
                 </template>
-                <div id="results"></div>
+                <div id="result"></div>
             </div>
         </div>
         <footer>

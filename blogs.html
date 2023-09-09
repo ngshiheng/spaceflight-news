@@ -61,36 +61,37 @@
                 nunjucks-template="blogs-template"
             >
                 <template id="blogs-template">
-                    <!-- count -->
-                    {% if not previous %}
-                    <i> Found {{ count }} articles.</i>
-                    {% endif %}
+                    <div id="result">
+                        <!-- count -->
+                        {% if not previous %}
+                        <i> Found {{ count }} articles.</i>
+                        {% endif %}
 
-                    <!-- results -->
-                    {% for blog in results %}
-                    <div>
-                        <hr />
-                        <h2>
-                            <a href="{{ blog.url }}">{{ blog.title }}</a>
-                        </h2>
-                        <h4>Post by {{ blog.news_site }}</h4>
-                        <p>{{ blog.summary }}</p>
+                        <!-- results -->
+                        {% for blog in results %}
+                        <div>
+                            <hr />
+                            <h2>
+                                <a href="{{ blog.url }}">{{ blog.title }}</a>
+                            </h2>
+                            <h4>Post by {{ blog.news_site }}</h4>
+                            <p>{{ blog.summary }}</p>
+                        </div>
+                        {% endfor %}
+
+                        <!-- load more -->
+                        {% if next %}
+                        <button
+                            hx-get="{{ next }}"
+                            hx-swap="outerHTML"
+                            hx-trigger="click"
+                            nunjucks-template="blogs-template"
+                        >
+                            Load More...
+                        </button>
+                        {% endif %}
                     </div>
-                    {% endfor %}
-
-                    <!-- load more -->
-                    {% if next %}
-                    <button
-                        hx-get="{{ next }}"
-                        hx-swap="outerHTML"
-                        hx-trigger="click"
-                        nunjucks-template="blogs-template"
-                    >
-                        Load More...
-                    </button>
-                    {% endif %}
                 </template>
-                <div id="results"></div>
             </div>
         </div>
         <hr />
