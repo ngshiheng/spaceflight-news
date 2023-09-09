@@ -1,89 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Spaceflight News Articles</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://unpkg.com/htmx.org"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
-    <script>
-      // CORS workaround
-      document.addEventListener("htmx:configRequest", (evt) => {
-        evt.detail.headers = [];
-      });
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-    />
-  </head>
-  <body>
-    <h1>Spaceflight News Articles</h1>
-    <p>
-      Showcase how infinite scrolling works on htmx with JSON data APIs. See the
-      source code on
-      <a
-        href="https://github.com/ngshiheng/spaceflight-news/blob/main/articles.html"
-        >GitHub</a
-      >.
-    </p>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li>
-        <a href="/articles.html"><u>Articles</u></a>
-      </li>
-      <li><a href="/blogs.html">Blogs</a></li>
-      <li><a href="/reports.html">Reports</a></li>
-    </ul>
-    <br />
-    <div hx-ext="client-side-templates">
-      <input
-        autofocus
-        name="search"
-        type="search"
-        placeholder="Search articles..."
-        hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-        hx-trigger="keyup changed delay:500ms, search"
-        hx-target="#result"
-        nunjucks-template="articles-template"
-      />
-      <br />
-      <div
-        hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-        hx-trigger="revealed"
-        hx-swap="afterend"
-        nunjucks-template="articles-template"
-      >
-        <template id="articles-template">
-          <div id="result">
-            <i> Found {{ count }} articles.</i>
-            {% for article in results %}
-            <hr />
-            <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-            <h5><span></span> Post by {{ article.news_site }}</h5>
-            {% if article.featured %}
-            <h5>
-              <span>Featured</span>
-            </h5>
-            {% endif %}
-            <p>{{ article.summary }}</p>
-            <br /><br />
-            {% endfor %} {% if next %}
+    <head>
+        <title>Spaceflight News Articles</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/htmx.org"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+        <script>
+            // CORS workaround
+            document.addEventListener("htmx:configRequest", (evt) => {
+                evt.detail.headers = [];
+            });
+        </script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
+        />
+    </head>
+    <body>
+        <h1>Spaceflight News Articles</h1>
+        <p>
+            Showcase how infinite scrolling rocks on htmx with JSON data APIs.
+            Head to
+            <a
+                href="https://github.com/ngshiheng/spaceflight-news/blob/main/articles.html"
+                >GitHub</a
+            >
+            and peep the source code!
+        </p>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li>
+                <a href="/articles.html"><u>Articles</u></a>
+            </li>
+            <li><a href="/blogs.html">Blogs</a></li>
+            <li><a href="/reports.html">Reports</a></li>
+        </ul>
+        <div hx-ext="client-side-templates">
+            <input
+                autofocus
+                hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+                hx-target="#result"
+                hx-trigger="keyup changed delay:500ms, search"
+                name="search"
+                nunjucks-template="articles-template"
+                placeholder="Search articles..."
+                type="search"
+            />
+
             <div
-              hx-get="{{ next }}"
-              hx-swap="outerHTML"
-              hx-trigger="revealed"
-              nunjucks-template="articles-template"
-            ></div>
-            {% endif %}
-          </div>
-        </template>
-      </div>
-    </div>
-    <hr />
-    <footer>
-      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
-    </footer>
-  </body>
+                hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+                hx-swap="afterend"
+                hx-trigger="revealed"
+                nunjucks-template="articles-template"
+            >
+                <template id="articles-template">
+                    <div id="result">
+                        <!-- count -->
+                        {% if not previous %}
+                        <div>
+                            <i> Found {{ count }} articles.</i>
+                        </div>
+                        {% endif %}
+                        <!-- results -->
+                        {% for article in results %}
+                        <div>
+                            <hr />
+                            <h2>
+                                <a href="{{ article.url }}"
+                                    >{{ article.title }}</a
+                                >
+                            </h2>
+                            <h4>Post by {{ article.news_site }}</h4>
+                            <p>{{ article.summary }}</p>
+                        </div>
+                        {% endfor %}
+
+                        <!-- infinite scrolling -->
+                        {% if next %}
+                        <div
+                            hx-get="{{ next }}"
+                            hx-swap="outerHTML"
+                            hx-trigger="revealed"
+                            nunjucks-template="articles-template"
+                        ></div>
+                        {% endif %}
+                    </div>
+                </template>
+            </div>
+        </div>
+        <footer>
+            <hr />
+            <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+        </footer>
+    </body>
 </html>
