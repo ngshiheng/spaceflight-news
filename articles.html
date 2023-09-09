@@ -19,7 +19,12 @@
         />
     </head>
     <body>
-        <h1>Spaceflight News Articles</h1>
+        <h1>
+            Spaceflight News Articles
+            <span class="htmx-indicator">
+                <img src="img/block.svg" />
+            </span>
+        </h1>
         <p>
             Showcase how <b>infinite scrolling</b> rocks on htmx with JSON data
             APIs. Head to
@@ -41,6 +46,7 @@
             <input
                 autofocus
                 hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+                hx-indicator=".htmx-indicator"
                 hx-target="#result"
                 hx-trigger="keyup changed delay:500ms, search"
                 name="search"
@@ -51,6 +57,7 @@
 
             <div
                 hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
+                hx-indicator=".htmx-indicator"
                 hx-swap="afterend"
                 hx-trigger="revealed"
                 nunjucks-template="articles-template"
@@ -84,7 +91,11 @@
                             hx-swap="outerHTML"
                             hx-trigger="revealed"
                             nunjucks-template="articles-template"
-                        ></div>
+                        >
+                            <span>
+                                <img src="img/bar.svg" />
+                            </span>
+                        </div>
                         {% endif %}
                     </div>
                 </template>

@@ -19,7 +19,12 @@
         />
     </head>
     <body>
-        <h1>Spaceflight News Blogs</h1>
+        <h1>
+            Spaceflight News Blogs
+            <span class="htmx-indicator">
+                <img src="img/block.svg" />
+            </span>
+        </h1>
         <p>
             Demo of how the <b>load more</b> UX pattern works on htmx with JSON
             data APIs! You can find the source code on
@@ -40,6 +45,7 @@
             <input
                 autofocus
                 hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+                hx-indicator=".htmx-indicator"
                 hx-target="#result"
                 hx-trigger="keyup changed delay:500ms, search"
                 name="search"
@@ -49,6 +55,7 @@
             />
             <div
                 hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
+                hx-indicator=".htmx-indicator"
                 hx-swap="afterend"
                 hx-trigger="revealed"
                 nunjucks-template="blogs-template"

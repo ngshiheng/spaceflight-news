@@ -19,7 +19,12 @@
         />
     </head>
     <body>
-        <h1>Spaceflight News Reports</h1>
+        <h1>
+            Spaceflight News Reports
+            <span class="htmx-indicator">
+                <img src="img/block.svg" />
+            </span>
+        </h1>
         <p>
             Check out how <b>pagination</b> works on htmx with JSON data APIs.
             You can find the source code on
@@ -41,6 +46,7 @@
             <input
                 autofocus
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+                hx-indicator=".htmx-indicator"
                 hx-target="#results"
                 hx-trigger="keyup changed delay:500ms, search"
                 name="search"
@@ -51,6 +57,7 @@
 
             <div
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+                hx-indicator=".htmx-indicator"
                 hx-swap="innerHTML show:window:top"
                 hx-target="#results"
                 hx-trigger="revealed"
