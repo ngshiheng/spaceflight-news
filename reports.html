@@ -1,120 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Spaceflight News Reports</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://unpkg.com/htmx.org"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
-    <script>
-      // CORS workaround
-      document.addEventListener("htmx:configRequest", (evt) => {
-        evt.detail.headers = [];
-      });
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-    />
-  </head>
-  <body>
-    <h1>Spaceflight News Reports</h1>
-    <p>
-      A demonstration of how next-previous pagination works on htmx with JSON
-      data APIs. See the source code on
-      <a
-        href="https://github.com/ngshiheng/spaceflight-news/blob/main/reports.html"
-        >GitHub</a
-      >.
-    </p>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/articles.html">Articles</a></li>
-      <li><a href="/blogs.html">Blogs</a></li>
-      <li>
-        <a href="/reports.html"><u>Reports</u></a>
-      </li>
-    </ul>
-    <br />
-    <div hx-ext="client-side-templates">
-      <input
-        autofocus
-        name="search"
-        type="search"
-        placeholder="Search reports..."
-        hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
-        hx-trigger="keyup changed delay:500ms, search"
-        hx-target="#results"
-        nunjucks-template="reports-template"
-      />
-      <br />
-      <div
-        hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
-        hx-swap="innerHTML show:window:top"
-        hx-trigger="revealed"
-        hx-target="#results"
-        nunjucks-template="reports-template"
-      >
-        <template id="reports-template">
-          <i> Found {{ count }} reports.</i>
-          <br /><br />
-          {% if previous %}
-          <a
-            href
-            hx-get="{{ previous }}"
-            hx-target="#results"
-            nunjucks-template="reports-template"
-          >
-            &laquo; Previous
-          </a>
-          | {% endif %} {% if next %}
-          <a
-            href
-            hx-get="{{ next }}"
-            hx-target="#results"
-            nunjucks-template="reports-template"
-          >
-            Next &raquo;
-          </a>
-          {% endif %} {% for report in results %}
-          <hr />
-          <h2><a href="{{ report.url }}">{{ report.title }}</a></h2>
-          <h5><span></span> Post by {{ report.news_site }}</h5>
-          {% if report.featured %}
-          <h5>
-            <span>Featured</span>
-          </h5>
-          {% endif %}
-          <p>{{ report.summary }}</p>
-          <br /><br />
-          {% endfor %} {% if previous %}
-          <a
-            href
-            hx-get="{{ previous }}"
-            hx-target="#results"
-            nunjucks-template="reports-template"
-          >
-            &laquo; Previous
-          </a>
-          | {% endif %} {% if next %}
-          <a
-            href
-            hx-get="{{ next }}"
-            hx-target="#results"
-            nunjucks-template="reports-template"
-          >
-            Next &raquo;
-          </a>
-          {% endif %}
-        </template>
-        <div id="results"></div>
-      </div>
-    </div>
+    <head>
+        <title>Spaceflight News Reports</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="https://unpkg.com/htmx.org"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+        <script>
+            // CORS workaround
+            document.addEventListener("htmx:configRequest", (evt) => {
+                evt.detail.headers = [];
+            });
+        </script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
+        />
+    </head>
+    <body>
+        <h1>Spaceflight News Reports</h1>
+        <p>
+            Check out how pagination works on htmx with JSON data APIs. You can
+            find the source code on
+            <a
+                href="https://github.com/ngshiheng/spaceflight-news/blob/main/reports.html"
+                >GitHub</a
+            >. Enjoy!
+        </p>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/articles.html">Articles</a></li>
+            <li><a href="/blogs.html">Blogs</a></li>
+            <li>
+                <a href="/reports.html"><u>Reports</u></a>
+            </li>
+        </ul>
 
-    <hr />
-    <footer>
-      <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
-    </footer>
-  </body>
+        <div hx-ext="client-side-templates">
+            <input
+                autofocus
+                hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+                hx-target="#results"
+                hx-trigger="keyup changed delay:500ms, search"
+                name="search"
+                nunjucks-template="reports-template"
+                placeholder="Search reports..."
+                type="search"
+            />
+
+            <div
+                hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
+                hx-swap="innerHTML show:window:top"
+                hx-target="#results"
+                hx-trigger="revealed"
+                nunjucks-template="reports-template"
+            >
+                <template id="reports-template">
+                    <!-- count -->
+                    <div>
+                        <i> Found {{ count }} articles.</i>
+                    </div>
+
+                    <!-- pagination -->
+                    {% if previous %}
+                    <a
+                        href
+                        hx-get="{{ previous }}"
+                        hx-target="#results"
+                        nunjucks-template="reports-template"
+                    >
+                        &laquo; Previous
+                    </a>
+                    | {% endif %} {% if next %}
+                    <a
+                        href
+                        hx-get="{{ next }}"
+                        hx-target="#results"
+                        nunjucks-template="reports-template"
+                    >
+                        Next &raquo;
+                    </a>
+                    {% endif %}
+
+                    <!-- results -->
+                    {% for report in results %}
+                    <div>
+                        <hr />
+                        <h2>
+                            <a href="{{ report.url }}">{{ report.title }}</a>
+                        </h2>
+                        <h4>Post by {{ report.news_site }}</h4>
+                        <p>{{ report.summary }}</p>
+                    </div>
+                    {% endfor %}
+
+                    <!-- pagination -->
+                    {% if previous %}
+                    <a
+                        href
+                        hx-get="{{ previous }}"
+                        hx-target="#results"
+                        nunjucks-template="reports-template"
+                    >
+                        &laquo; Previous
+                    </a>
+                    | {% endif %} {% if next %}
+                    <a
+                        href
+                        hx-get="{{ next }}"
+                        hx-target="#results"
+                        nunjucks-template="reports-template"
+                    >
+                        Next &raquo;
+                    </a>
+                    {% endif %}
+                </template>
+                <div id="results"></div>
+            </div>
+        </div>
+        <footer>
+            <hr />
+            <p>Created by <a href="https://jerrynsh.com">Jerry Ng</a>.</p>
+        </footer>
+    </body>
 </html>
