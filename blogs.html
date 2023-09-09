@@ -10,141 +10,77 @@
         <script>
             // CORS workaround
             document.addEventListener("htmx:configRequest", (evt) => {
-              evt.detail.headers = [];
+                evt.detail.headers = [];
             });
         </script>
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-            />
+        />
     </head>
     <body>
         <h1>Spaceflight News Blogs</h1>
         <p>
-            Numbered pagination demonstration using htmx
-            with JSON data APIs. See the
-            source code on
+            Demo of how the <b>load more</b> UX pattern works on htmx with JSON
+            data APIs! You can find the source code on
             <a
-              href="https://github.com/ngshiheng/spaceflight-news/blob/main/blogs.html"
-              >GitHub</a
-            >.
+                href="https://github.com/ngshiheng/spaceflight-news/blob/main/blogs.html"
+                >GitHub</a
+            >. Go take a look!
         </p>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/articles.html">Articles</a></li>
-            <li><a href="/blogs.html"><u>Blogs</u></a></li>
+            <li>
+                <a href="/blogs.html"><u>Blogs</u></a>
+            </li>
             <li><a href="/reports.html">Reports</a></li>
         </ul>
-        <br />
         <div hx-ext="client-side-templates">
             <input
                 autofocus
-                name="search"
-                type="search"
-                placeholder="Search blogs..."
                 hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-                hx-trigger="keyup changed delay:500ms, search"
                 hx-target="#result"
+                hx-trigger="keyup changed delay:500ms, search"
+                name="search"
                 nunjucks-template="blogs-template"
-                />
-            <br />
+                placeholder="Search blogs..."
+                type="search"
+            />
             <div
                 hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-                hx-swap="innerHTML show:window:top"
+                hx-swap="afterend"
                 hx-trigger="revealed"
-                hx-target="#results"
                 nunjucks-template="blogs-template"
-                >
+            >
                 <template id="blogs-template">
-                    <div id="result">
-                        <i>
-                            {% if count === 0 %} Found 0 blogs. 
-                            {% else %} 
-                            Found {{ count }} blogs. 
-                        </i>
-                        <br /><br />
-                        {% set totalPages = ((count / 10) - 1) | round(0, "ceil") %} 
-                        {% set offsetRegex = r/offset=(\d+)/g %} 
-                        {% set searchRegex = r/search=(.+)/g %} 
-                        {% if next %}
-                        {% set offsetParam = (offsetRegex.exec(next)[1] | default(0) | int) - 10 %} 
-                        {% elseif previous %}
-                        {% set offsetParam = (offsetRegex.exec(previous)[1] | default(0) | int) + 10 %}
-                        {% else %}
-                        {% set offsetParam = 0 %}
-                        {% endif %}
-                        {% if offsetParam !== NaN %}
-                        {% set offset = offsetParam %} 
-                        {% else %}
-                        {% set offset = 10 %} 
-                        {% endif %}
-                        {% set search = searchRegex.exec(next)[1] or searchRegex.exec(previous)[1] %} {# FIXME: clear search input if next and previous are empty #}
-                        {% set currentPage = (offset / 10) + 1 %}
-                        {% if currentPage === 1 %}
-                        <u
-                            ><a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0&search={{ search }}"
-                            hx-target="#results"
-                            >1</a
-                            ></u
-                            >
-                        {% else %}
-                        <a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset=0&search={{ search }}"
-                            hx-target="#results"
-                            >&laquo; 1</a
-                            >
-                        {% endif %}
-                        ... 
-                        {% set pages = range(currentPage -3 ,currentPage + 4) | select('greaterthan', 1) | select('lessthan', totalPages + 1) %}
-                        {% for i in pages %} 
-                        {% if i === currentPage %}
-                        <u
-                            ><a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i * 10) - 10 }}&search={{ search }}"
-                            hx-target="#results"
-                            >{{ i }}</a
-                            ></u
-                            >
-                        {% else %}
-                        <a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (i * 10) - 10 }}&search={{ search }}"
-                            hx-target="#results"
-                            >{{ i }}</a
-                            >
-                        {% endif %} {% endfor %} ... {% if currentPage === totalPages + 1 %}
-                        <u>
-                        <a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (totalPages * 10) }}&search={{ search }}"
-                            hx-target="#results"
-                            >{{ totalPages + 1 }}</a
-                            >
-                        </u>
-                        {% else %}
-                        <a
-                            href
-                            hx-get="https://api.spaceflightnewsapi.net/v4/blogs/?limit=10&offset={{ (totalPages * 10) }}&search={{ search }}"
-                            hx-target="#results"
-                            >{{ totalPages + 1 }} &raquo</a
-                            >
-                        {% endif %} {% for blog in results %}
+                    <!-- count -->
+                    {% if not previous %}
+                    <i> Found {{ count }} articles.</i>
+                    {% endif %}
+
+                    <!-- results -->
+                    {% for blog in results %}
+                    <div>
                         <hr />
-                        <h2><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
-                        <h5><span></span> Post by {{ blog.news_site }}</h5>
-                        {% if blog.featured %}
-                        <h5>
-                            <span>Featured</span>
-                        </h5>
-                        {% endif %}
+                        <h2>
+                            <a href="{{ blog.url }}">{{ blog.title }}</a>
+                        </h2>
+                        <h4>Post by {{ blog.news_site }}</h4>
                         <p>{{ blog.summary }}</p>
-                        <br /><br />
-                        {% endfor %}
                     </div>
+                    {% endfor %}
+
+                    <!-- load more -->
+                    {% if next %}
+                    <button
+                        hx-get="{{ next }}"
+                        hx-swap="outerHTML"
+                        hx-trigger="click"
+                        nunjucks-template="blogs-template"
+                    >
+                        Load More...
+                    </button>
                     {% endif %}
                 </template>
                 <div id="results"></div>
