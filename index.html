@@ -20,8 +20,31 @@
     </head>
     <body>
         <div>
-            <h1>Spaceflight News</h1>
-            <p>Explore the universe of spaceflight news.</p>
+            <h1>
+                Spaceflight News
+                <span class="htmx-indicator">
+                    <img src="img/block.svg" />
+                </span>
+            </h1>
+            <p>Explore the universe of spaceflight news from:</p>
+            <div hx-ext="client-side-templates">
+                <div
+                    hx-get="https://api.spaceflightnewsapi.net/v4/info/"
+                    hx-indicator=".htmx-indicator"
+                    hx-trigger="revealed"
+                    nunjucks-template="info-template"
+                >
+                    <template id="info-template">
+                        <marquee>
+                            <i>
+                                {% set items = news_sites %} {{ items | join(",
+                                ") }}
+                            </i>
+                        </marquee>
+                    </template>
+                </div>
+            </div>
+
             <ul>
                 <li>
                     <a href="/"><u>Home</u></a>
