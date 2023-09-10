@@ -97,7 +97,10 @@
                                 >{{ report.title }}</a
                             >
                         </h2>
-                        <h4>Post by {{ report.news_site }}</h4>
+                        <h4>
+                            Published by {{ report.news_site }}, {{
+                            report.published_at | truncate(10, true, "")}}
+                        </h4>
                         <p>{{ report.summary }}</p>
                     </div>
                     {% endfor %}

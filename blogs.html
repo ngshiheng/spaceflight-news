@@ -76,7 +76,10 @@
                                     >{{ blog.title }}</a
                                 >
                             </h2>
-                            <h4>Post by {{ blog.news_site }}</h4>
+                            <h4>
+                                Published by {{ blog.news_site }}, {{
+                                blog.published_at | truncate(10, true, "")}}
+                            </h4>
                             <p>{{ blog.summary }}</p>
                         </div>
                         {% endfor %}
