@@ -1,5 +1,7 @@
 # Spaceflight News
 
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/uizi.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
+
 ## Technologies
 
 This site is powered by [htmx](https://htmx.org/), [Nunjucks](https://mozilla.github.io/nunjucks/), and the [Spaceflight News API (SNAPI)](https://api.spaceflightnewsapi.net/v4/docs/).
