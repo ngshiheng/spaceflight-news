@@ -12,6 +12,8 @@ While htmx is designed to work best with [hypermedia responses](https://htmx.org
 
 I created this because I feel there is a lack of comprehensive examples for managing [JSON responses](https://htmx.org/essays/two-approaches-to-decoupling/#json-data-apis-application-level-decoupling) using htmx today.
 
+[Read more...](https://jerrynsh.com/creating-a-spaceflight-news-blog-with-htmx-and-json-api/)
+
 ## Demo
 
 Here, you'll find htmx examples of [UX patterns for page loading](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading), e.g. pagination, load more, and infinite scrolling, all seamlessly integrated with JSON responses using [client-side templates](https://htmx.org/extensions/client-side-templates/).
