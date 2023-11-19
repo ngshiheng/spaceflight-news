@@ -57,86 +57,75 @@
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
                 hx-indicator=".htmx-indicator"
                 hx-target="#result"
-                hx-trigger="load delay:250ms, keyup changed delay:500ms, search"
+                hx-trigger="load delay:100ms, keyup changed delay:500ms, search"
                 hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);"
                 name="search"
                 nunjucks-template="reports-template"
                 placeholder="Search reports..."
                 type="search"
             />
-            <div
-                hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
-                hx-indicator=".htmx-indicator"
-                hx-swap="innerHTML show:window:top"
-                hx-target="#result"
-                hx-trigger="revealed"
-                nunjucks-template="reports-template"
-            >
-                <template id="reports-template">
-                    <!-- count -->
-                    <div>
-                        <i> Found {{ count }} articles.</i>
-                    </div>
+            <template id="reports-template">
+                <!-- count -->
+                <i> Found {{ count }} articles.</i>
 
-                    <!-- pagination -->
-                    {% if previous %}
-                    <a
-                        href
-                        hx-get="{{ previous }}"
-                        hx-target="#result"
-                        nunjucks-template="reports-template"
-                    >
-                        &laquo; Previous
-                    </a>
-                    | {% endif %} {% if next %}
-                    <a
-                        href
-                        hx-get="{{ next }}"
-                        hx-target="#result"
-                        nunjucks-template="reports-template"
-                    >
-                        Next &raquo;
-                    </a>
-                    {% endif %}
+                <!-- pagination -->
+                {% if previous %}
+                <a
+                    href
+                    hx-get="{{ previous }}"
+                    hx-target="#result"
+                    nunjucks-template="reports-template"
+                >
+                    &laquo; Previous
+                </a>
+                | {% endif %} {% if next %}
+                <a
+                    href
+                    hx-get="{{ next }}"
+                    hx-target="#result"
+                    nunjucks-template="reports-template"
+                >
+                    Next &raquo;
+                </a>
+                {% endif %}
 
-                    <!-- results -->
-                    {% for report in results %}
-                    <div>
-                        <hr />
-                        <h2>
-                            <a href="{{ report.url }}">{{ report.title }}</a>
-                        </h2>
-                        <h4>
-                            Published by {{ report.news_site }}, {{
-                            report.published_at | truncate(10, true, "")}}
-                        </h4>
-                        <p>{{ report.summary }}</p>
-                    </div>
-                    {% endfor %}
+                <!-- results -->
+                {% for report in results %}
+                <div>
+                    <hr />
+                    <h2>
+                        <a href="{{ report.url }}">{{ report.title }}</a>
+                    </h2>
+                    <h4>
+                        Published by {{ report.news_site }}, {{
+                        report.published_at | truncate(10, true, "")}}
+                    </h4>
+                    <p>{{ report.summary }}</p>
+                </div>
+                {% endfor %}
 
-                    <!-- pagination -->
-                    {% if previous %}
-                    <a
-                        href
-                        hx-get="{{ previous }}"
-                        hx-target="#result"
-                        nunjucks-template="reports-template"
-                    >
-                        &laquo; Previous
-                    </a>
-                    | {% endif %} {% if next %}
-                    <a
-                        href
-                        hx-get="{{ next }}"
-                        hx-target="#result"
-                        nunjucks-template="reports-template"
-                    >
-                        Next &raquo;
-                    </a>
-                    {% endif %}
-                </template>
-                <div id="result"></div>
-            </div>
+                <!-- pagination -->
+                {% if previous %}
+                <a
+                    href
+                    hx-get="{{ previous }}"
+                    hx-target="#result"
+                    nunjucks-template="reports-template"
+                >
+                    &laquo; Previous
+                </a>
+                | {% endif %} {% if next %}
+                <a
+                    href
+                    hx-get="{{ next }}"
+                    hx-target="#result"
+                    nunjucks-template="reports-template"
+                >
+                    Next &raquo;
+                </a>
+                {% endif %}
+            </template>
+            <div id="result"></div>
         </div>
         <footer>
             <hr />

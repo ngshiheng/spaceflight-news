@@ -58,61 +58,49 @@
                 hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
                 hx-indicator=".htmx-indicator"
                 hx-target="#result"
-                hx-trigger="load delay:250ms, keyup changed delay:500ms, search"
+                hx-trigger="load delay:100ms, keyup changed delay:500ms, search"
                 hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);"
                 name="search"
                 nunjucks-template="articles-template"
                 placeholder="Search articles..."
                 type="search"
             />
-            <div
-                hx-get="https://api.spaceflightnewsapi.net/v4/articles/"
-                hx-indicator=".htmx-indicator"
-                hx-swap="afterend"
-                hx-trigger="revealed"
-                nunjucks-template="articles-template"
-            >
-                <template id="articles-template">
-                    <div id="result">
-                        <!-- count -->
-                        {% if not previous %}
-                        <div>
-                            <i> Found {{ count }} articles.</i>
-                        </div>
-                        {% endif %}
-                        <!-- results -->
-                        {% for article in results %}
-                        <div>
-                            <hr />
-                            <h2>
-                                <a href="{{ article.url }}"
-                                    >{{ article.title }}</a
-                                >
-                            </h2>
-                            <h4>
-                                Published by {{ article.news_site }}, {{
-                                article.published_at | truncate(10, true, "")}}
-                            </h4>
-                            <p>{{ article.summary }}</p>
-                        </div>
-                        {% endfor %}
+            <template id="articles-template">
+                <!-- count -->
+                {% if not previous %}
+                <i> Found {{ count }} articles.</i>
+                {% endif %}
 
-                        <!-- infinite scrolling -->
-                        {% if next %}
-                        <div
-                            hx-get="{{ next }}"
-                            hx-swap="outerHTML"
-                            hx-trigger="revealed"
-                            nunjucks-template="articles-template"
-                        >
-                            <span>
-                                <img src="img/bar.svg" />
-                            </span>
-                        </div>
-                        {% endif %}
-                    </div>
-                </template>
-            </div>
+                <!-- results -->
+                {% for article in results %}
+                <div>
+                    <hr />
+                    <h2>
+                        <a href="{{ article.url }}">{{ article.title }}</a>
+                    </h2>
+                    <h4>
+                        Published by {{ article.news_site }}, {{
+                        article.published_at | truncate(10, true, "")}}
+                    </h4>
+                    <p>{{ article.summary }}</p>
+                </div>
+                {% endfor %}
+
+                <!-- infinite scrolling -->
+                {% if next %}
+                <div
+                    hx-get="{{ next }}"
+                    hx-swap="outerHTML"
+                    hx-trigger="revealed"
+                    nunjucks-template="articles-template"
+                >
+                    <span>
+                        <img src="img/bar.svg" />
+                    </span>
+                </div>
+                {% endif %}
+            </template>
+            <div id="result"></div>
         </div>
         <footer>
             <hr />
