@@ -12,6 +12,15 @@
             document.addEventListener("htmx:configRequest", (evt) => {
                 evt.detail.headers = [];
             });
+
+            // Set the value of the 'search-input' element to the 'search' parameter from the URL if it exists
+            htmx.onLoad(function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get("search");
+                if (query) {
+                    document.getElementById("search-input").value = query;
+                }
+            });
         </script>
         <link
             rel="stylesheet"
@@ -44,10 +53,12 @@
         <div hx-ext="client-side-templates">
             <input
                 autofocus
+                id="search-input"
                 hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
                 hx-indicator=".htmx-indicator"
                 hx-target="#result"
-                hx-trigger="keyup changed delay:500ms, search"
+                hx-trigger="load delay:250ms, keyup changed delay:500ms, search"
+                hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);"
                 name="search"
                 nunjucks-template="reports-template"
                 placeholder="Search reports..."
@@ -93,9 +104,7 @@
                     <div>
                         <hr />
                         <h2>
-                            <a href="{{ report.url }}" target="_blank"
-                                >{{ report.title }}</a
-                            >
+                            <a href="{{ report.url }}">{{ report.title }}</a>
                         </h2>
                         <h4>
                             Published by {{ report.news_site }}, {{
