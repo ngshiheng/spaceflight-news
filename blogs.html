@@ -4,9 +4,10 @@
         <title>Spaceflight News Blogs</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script src="https://unpkg.com/htmx.org"></script>
-        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+        <meta name="htmx-config" content='{"selfRequestsOnly": false}' />
         <script>
             // CORS workaround
             document.addEventListener("htmx:configRequest", (evt) => {
@@ -22,10 +23,7 @@
                 }
             });
         </script>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css" />
     </head>
     <body>
         <h1>
@@ -34,14 +32,7 @@
                 <img src="img/block.svg" />
             </span>
         </h1>
-        <p>
-            Demo of how the <b>load more</b> UX pattern works on htmx with JSON
-            data APIs! You can find the source code on
-            <a
-                href="https://github.com/ngshiheng/spaceflight-news/blob/main/blogs.html"
-                >GitHub</a
-            >. Go take a look!
-        </p>
+        <p>Demo of how the <b>load more</b> UX pattern works on htmx with JSON data APIs! You can find the source code on <a href="https://github.com/ngshiheng/spaceflight-news/blob/main/blogs.html">GitHub</a>. Go take a look!</p>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/articles.html">Articles</a></li>
@@ -51,19 +42,7 @@
             <li><a href="/reports.html">Reports</a></li>
         </ul>
         <div hx-ext="client-side-templates">
-            <input
-                id="search-input"
-                autofocus
-                hx-get="https://api.spaceflightnewsapi.net/v4/blogs/"
-                hx-indicator=".htmx-indicator"
-                hx-target="#result"
-                hx-trigger="load delay:100ms, keyup changed delay:500ms, search"
-                hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);"
-                name="search"
-                nunjucks-template="blogs-template"
-                placeholder="Search blogs..."
-                type="search"
-            />
+            <input id="search-input" autofocus hx-get="https://api.spaceflightnewsapi.net/v4/blogs/" hx-indicator=".htmx-indicator" hx-target="#result" hx-trigger="load delay:100ms, keyup changed delay:500ms, search" hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);" name="search" nunjucks-template="blogs-template" placeholder="Search blogs..." type="search" />
             <template id="blogs-template">
                 <!-- count -->
                 {% if not previous %}
@@ -77,24 +56,14 @@
                     <h2>
                         <a href="{{ blog.url }}">{{ blog.title }}</a>
                     </h2>
-                    <h4>
-                        Published by {{ blog.news_site }}, {{ blog.published_at
-                        | truncate(10, true, "")}}
-                    </h4>
+                    <h4>Published by {{ blog.news_site }}, {{ blog.published_at | truncate(10, true, "")}}</h4>
                     <p>{{ blog.summary }}</p>
                 </div>
                 {% endfor %}
 
                 <!-- load more -->
                 {% if next %}
-                <button
-                    hx-get="{{ next }}"
-                    hx-swap="outerHTML"
-                    hx-trigger="click"
-                    nunjucks-template="blogs-template"
-                >
-                    Load More...
-                </button>
+                <button hx-get="{{ next }}" hx-swap="outerHTML" hx-trigger="click" nunjucks-template="blogs-template">Load More...</button>
                 {% endif %}
             </template>
             <div id="result"></div>
