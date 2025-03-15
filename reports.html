@@ -4,9 +4,10 @@
         <title>Spaceflight News Reports</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script src="https://unpkg.com/htmx.org"></script>
-        <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/nunjucks@3.2.4/browser/nunjucks.min.js"></script>
+        <meta name="htmx-config" content='{"selfRequestsOnly": false}' />
         <script>
             // CORS workaround
             document.addEventListener("htmx:configRequest", (evt) => {
@@ -22,10 +23,7 @@
                 }
             });
         </script>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css"
-        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.css" />
     </head>
     <body>
         <h1>
@@ -34,14 +32,7 @@
                 <img src="img/block.svg" />
             </span>
         </h1>
-        <p>
-            Check out how <b>pagination</b> works on htmx with JSON data APIs.
-            You can find the source code on
-            <a
-                href="https://github.com/ngshiheng/spaceflight-news/blob/main/reports.html"
-                >GitHub</a
-            >. Enjoy!
-        </p>
+        <p>Check out how <b>pagination</b> works on htmx with JSON data APIs. You can find the source code on <a href="https://github.com/ngshiheng/spaceflight-news/blob/main/reports.html">GitHub</a>. Enjoy!</p>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/articles.html">Articles</a></li>
@@ -51,42 +42,16 @@
             </li>
         </ul>
         <div hx-ext="client-side-templates">
-            <input
-                autofocus
-                id="search-input"
-                hx-get="https://api.spaceflightnewsapi.net/v4/reports/"
-                hx-indicator=".htmx-indicator"
-                hx-target="#result"
-                hx-trigger="load delay:100ms, keyup changed delay:500ms, search"
-                hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);"
-                name="search"
-                nunjucks-template="reports-template"
-                placeholder="Search reports..."
-                type="search"
-            />
+            <input autofocus id="search-input" hx-get="https://api.spaceflightnewsapi.net/v4/reports/" hx-indicator=".htmx-indicator" hx-target="#result" hx-trigger="load delay:100ms, keyup changed delay:500ms, search" hx-on::after-request="const url = new URL(location); url.searchParams.set('search', this.value); history.pushState({}, '', url);" name="search" nunjucks-template="reports-template" placeholder="Search reports..." type="search" />
             <template id="reports-template">
                 <!-- count -->
                 <i> Found {{ count }} articles.</i>
 
                 <!-- pagination -->
                 {% if previous %}
-                <a
-                    href
-                    hx-get="{{ previous }}"
-                    hx-target="#result"
-                    nunjucks-template="reports-template"
-                >
-                    &laquo; Previous
-                </a>
+                <a href hx-get="{{ previous }}" hx-target="#result" nunjucks-template="reports-template"> &laquo; Previous </a>
                 | {% endif %} {% if next %}
-                <a
-                    href
-                    hx-get="{{ next }}"
-                    hx-target="#result"
-                    nunjucks-template="reports-template"
-                >
-                    Next &raquo;
-                </a>
+                <a href hx-get="{{ next }}" hx-target="#result" nunjucks-template="reports-template"> Next &raquo; </a>
                 {% endif %}
 
                 <!-- results -->
@@ -96,33 +61,16 @@
                     <h2>
                         <a href="{{ report.url }}">{{ report.title }}</a>
                     </h2>
-                    <h4>
-                        Published by {{ report.news_site }}, {{
-                        report.published_at | truncate(10, true, "")}}
-                    </h4>
+                    <h4>Published by {{ report.news_site }}, {{ report.published_at | truncate(10, true, "")}}</h4>
                     <p>{{ report.summary }}</p>
                 </div>
                 {% endfor %}
 
                 <!-- pagination -->
                 {% if previous %}
-                <a
-                    href
-                    hx-get="{{ previous }}"
-                    hx-target="#result"
-                    nunjucks-template="reports-template"
-                >
-                    &laquo; Previous
-                </a>
+                <a href hx-get="{{ previous }}" hx-target="#result" nunjucks-template="reports-template"> &laquo; Previous </a>
                 | {% endif %} {% if next %}
-                <a
-                    href
-                    hx-get="{{ next }}"
-                    hx-target="#result"
-                    nunjucks-template="reports-template"
-                >
-                    Next &raquo;
-                </a>
+                <a href hx-get="{{ next }}" hx-target="#result" nunjucks-template="reports-template"> Next &raquo; </a>
                 {% endif %}
             </template>
             <div id="result"></div>
